@@ -26,15 +26,15 @@ class Dados:
             >>> dados_json = Dados('dados.json', 'json')
             >>> dados_lista = Dados([{'nome': 'João'}], 'list')
         """
-        self.path = path
-        self.tipo_dados = tipo_dados 
-        self.dados = self.leitura_dados()
-        self.nome_colunas = self.get_columns()
-        self.qtd_linhas = self.size_data()
+        self.__path = path
+        self.__tipo_dados = tipo_dados 
+        self.dados = self.__leitura_dados()
+        self.nome_colunas = self.__get_columns()
+        self.qtd_linhas = self.__size_data()
         
 
 
-    def leitura_json(self):
+    def __leitura_json(self):
         """Lê um arquivo JSON e retorna os dados como lista de dicionários.
         
         Returns:
@@ -45,12 +45,12 @@ class Dados:
             >>> print(dados.dados[:2])  # Primeiros 2 registros
         """
         dados_json = []
-        with open(self.path, 'r', encoding='utf-8') as file:
+        with open(self.__path, 'r', encoding='utf-8') as file:
             dados_json = json.load(file)
         return dados_json
 
 
-    def leitura_csv(self):
+    def __leitura_csv(self):
         """Lê um arquivo CSV e retorna os dados como lista de dicionários.
         
         Returns:
@@ -61,7 +61,7 @@ class Dados:
             >>> print(dados.nome_colunas)  # Nome das colunas
         """
         dados_csv = []
-        with open(self.path, 'r', encoding='utf-8') as file:
+        with open(self.__path, 'r', encoding='utf-8') as file:
             spamreader = csv.DictReader(file, delimiter=',')
             for row in spamreader:
                 dados_csv.append(row)
@@ -69,7 +69,7 @@ class Dados:
         return dados_csv
 
 
-    def leitura_dados(self):
+    def __leitura_dados(self):
         """Método interno para carregar dados conforme o tipo especificado.
         
         Returns:
@@ -81,20 +81,20 @@ class Dados:
         Observação: os formatos aceitos são: 'json' e 'csv
         """
         dados = []
-        if self.tipo_dados == 'csv':
-            dados = self.leitura_csv()
+        if self.__tipo_dados == 'csv':
+            dados = self.__leitura_csv()
             
-        elif self.tipo_dados == 'json':
-            dados = self.leitura_json()
+        elif self.__tipo_dados == 'json':
+            dados = self.__leitura_json()
             
-        elif self.tipo_dados == 'list':
-            dados = self.path
-            self.path = 'lista_memoria'
+        elif self.__tipo_dados == 'list':
+            dados = self.__path
+            self.__path = 'lista_memoria'
             
         return dados
 
 
-    def get_columns(self):
+    def __get_columns(self):
         """Obtém os nomes das colunas/atributos dos dados.
         
         Returns:
@@ -130,10 +130,10 @@ class Dados:
             new_dados.append(dict_temp)
         
         self.dados = new_dados
-        self.nome_colunas = self.get_columns()
+        self.nome_colunas = self.__get_columns()
 
 
-    def size_data(self):
+    def __size_data(self):
         """Retorna a quantidade de registros nos dados.
         
         Returns:
@@ -169,7 +169,7 @@ class Dados:
         return Dados(combined_list, 'list')
 
 
-    def transformando_dados_tabela(self):
+    def __transformando_dados_tabela(self):
         """Converte os dados para formato tabular (lista de listas).
         
         Returns:
@@ -202,7 +202,7 @@ class Dados:
             >>> dados.salvando_dados('dados_convertidos.csv')
         """
         
-        dados_combinado_tabela = self.transformando_dados_tabela()
+        dados_combinado_tabela = self.__transformando_dados_tabela()
         
         with open(path, 'w', encoding='utf-8', newline='') as file:
             writer = csv.writer(file)
